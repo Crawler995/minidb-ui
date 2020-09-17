@@ -1,1 +1,10 @@
 @import '~antd/dist/antd.css';
+
+.editor-textarea {
+  outline-color: transparent;
+  border: 1px solid transparent!important;
+}
+
+.editor-textarea:focus {
+  border: 1px solid transparent!important;
+}
