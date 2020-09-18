@@ -4,11 +4,16 @@ import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-sql";
 import "ace-builds/src-noconflict/theme-github";
 import "ace-builds/src-noconflict/ext-language_tools";
-import IconButton from './IconButton';
-import { Button } from 'antd';
+import { Badge, Button } from 'antd';
+
+interface IProps {
+  isCodeRunning: boolean;
+  onRunCode: (code: string) => void;
+  onRunSelectedCode: (code: string) => void;
+}
 
 
-export default function SQLEditor() {
+export default function SQLEditor(props: IProps) {
   const [code, setCode] = useState('');
   const [selectedCode, setSelectedCode] = useState('');
 
@@ -47,19 +52,21 @@ export default function SQLEditor() {
   }
 
   return (
-    <div>
+    <Badge.Ribbon text="SQL Editor">
       <div style={{ margin: '10px 0' }}>
         <Button
-          type="primary" 
+          danger
+          disabled={props.isCodeRunning}
           size="small" 
           style={{ margin: '0 4px' }}
-          onClick={() => console.log('run code: ' + code)}
+          onClick={() => props.onRunCode(code)}
         >Run SQL</Button>
         <Button 
+          disabled={props.isCodeRunning}
           type="default" 
           size="small" 
           style={{ margin: '0 4px' }}
-          onClick={() => console.log('run selected code: ' + selectedCode)}
+          onClick={() => props.onRunSelectedCode(selectedCode)}
         >Run selected SQL</Button>
 
         <Button 
@@ -72,7 +79,10 @@ export default function SQLEditor() {
 
       <AceEditor
         width="100%"
-        height="45vh"
+        height="25vh"
+        style={{
+          border: '1px solid #f0f0f0'
+        }}
         fontSize="16px"
         mode="sql"
         theme="github"
@@ -91,6 +101,6 @@ export default function SQLEditor() {
           enableSnippets: true
         }}
       />
-    </div>
+    </Badge.Ribbon>
   )
 }

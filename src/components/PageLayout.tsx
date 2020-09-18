@@ -21,9 +21,7 @@ export default function PageLayout(props: React.PropsWithChildren<IProps>) {
     }}>
       <div style={{ 
         position: 'fixed', 
-        zIndex: 1, 
-        display: 'flex',
-        alignItems: 'center',
+        zIndex: 1,
         width: '100%', 
         height: headerHeight,
         padding: '0 20px',
