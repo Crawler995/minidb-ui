@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 
 import AceEditor from "react-ace";
 import "ace-builds/src-noconflict/mode-sql";
@@ -7,6 +7,7 @@ import "ace-builds/src-noconflict/ext-language_tools";
 import { Badge, Button } from 'antd';
 
 interface IProps {
+  defaultCode: string;
   isCodeRunning: boolean;
   onRunCode: (code: string) => void;
   onRunSelectedCode: (code: string) => void;
@@ -14,8 +15,12 @@ interface IProps {
 
 
 export default function SQLEditor(props: IProps) {
-  const [code, setCode] = useState('');
+  const [code, setCode] = useState(props.defaultCode);
   const [selectedCode, setSelectedCode] = useState('');
+
+  useEffect(() => {
+    setCode(props.defaultCode);
+  }, [props.defaultCode]);
 
   const getSelectedCode = (value: any) => {
     if(code === '') {

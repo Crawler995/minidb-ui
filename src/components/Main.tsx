@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 
-import { Row, Col } from 'antd';
+import { Row, Col, message } from 'antd';
 
 import PageLayout from './PageLayout';
 import SQLEditor from './SQLEditor';
@@ -22,6 +22,7 @@ export default function Main() {
   const [pageHeight, setPageHeight] = useState(0);
   const [loading, setLoading] = useState(false);
   const [curDatabase, setCurDatabase] = useState('(loading...)');
+  const [defaultCode, setDefaultCode] = useState('');
 
   useEffect(() => {
     getCurDatabase()
@@ -65,13 +66,23 @@ export default function Main() {
         dataIndex: column
       })));
       setHistories([...histories, {
+        key: histories.length,
         status,
         message,
         totalTime,
-        time
+        time,
+
+        code
       }]);
     })
     .catch(err => console.log(err));
+  }
+
+  const recoverHistory = (historyIndex: number) => {
+    const history = histories.find(history => history.key === historyIndex);
+    setDefaultCode(history.code);
+
+    message.success(`Recovered to history code in ${history.time}!`);
   }
 
   return (
@@ -86,6 +97,7 @@ export default function Main() {
           <Row gutter={[60, 36]}>
             <Col span={12}>
               <SQLEditor
+                defaultCode={defaultCode}
                 isCodeRunning={loading}
                 onRunCode={(code) => runCode(code)}
                 onRunSelectedCode={(code) => runCode(code)}
@@ -95,6 +107,7 @@ export default function Main() {
             <Col span={12}>
               <OpHistory
                 onClearHistory={() => setHistories([])}
+                onRecoverHistory={recoverHistory}
                 histories={histories}
               />
             </Col>
