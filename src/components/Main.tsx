@@ -8,7 +8,7 @@ import OpHistory from './OpHistory';
 import ResultTable from './ResultTable';
 import StatusBar from './StatusBar';
 
-import { getDefaultDatabase, runSQL } from '../data-center/network';
+import { getCurDatabase, runSQL } from '../data-center/network';
 
 interface ITableColumn {
   title: string;
@@ -21,10 +21,10 @@ export default function Main() {
   const [resultData, setResultData] = useState<any[]>([]);
   const [pageHeight, setPageHeight] = useState(0);
   const [loading, setLoading] = useState(false);
-  const [curDatabase, setCurDatabase] = useState('loading....');
+  const [curDatabase, setCurDatabase] = useState('(loading...)');
 
   useEffect(() => {
-    getDefaultDatabase()
+    getCurDatabase()
     .then(res => {
       if(res.status) {
         setCurDatabase(res.res);
@@ -106,7 +106,7 @@ export default function Main() {
                 columns={resultColumns}
                 dataSource={resultData}
                 loading={loading}
-                scroll={{ y: pageHeight * 0.5, x: 'calc(100vw - 60px)' }}
+                scroll={{ y: pageHeight * 0.75 - 190, x: 'calc(100vw - 60px)' }}
               />
             </Col>
           </Row>

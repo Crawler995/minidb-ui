@@ -77,24 +77,24 @@ export const runSQL = (sql: string) => {
   })
 };
 
-interface IDefaultDatabaseRes {
+interface ICurDatabaseRes {
   /**
-   * 如果至少存在数据库，则返回true，反之返回false。
+   * 如果至少存在一个数据库，则返回true，反之返回false。
    */
   status: boolean;
   /**
-   * 如果至少存在数据库，则返回第一个找到的数据库的名字，反之返回空字符串。
+   * 如果至少存在一个数据库，则返回第一个找到的数据库的名字，反之返回空字符串。
    */
   res: string;
 }
 
-export const getDefaultDatabase = () => {
+export const getCurDatabase = () => {
   // return axiosIns.get<any, IDefaultDatabaseRes>('/api/defaultdb');
-  return new Promise<IDefaultDatabaseRes>((resolve, reject) => {
+  return new Promise<ICurDatabaseRes>((resolve, reject) => {
     setTimeout(() => {
       resolve({
         status: true,
-        res: 'sys'
+        res: '(Please use a database!)'
       })
     }, 100);
   })
