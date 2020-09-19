@@ -13,6 +13,10 @@
   font-size: 12px!important;
 }
 
+.ant-table.ant-table-small .ant-table-tbody > .ant-table-measure-row > td {
+  padding: 0px!important;
+}
+
 .ant-table.ant-table-small .ant-table-tbody > tr > td {
   padding: 4px!important;
 }
@@ -26,7 +30,9 @@
 }
 
 .ant-empty-normal {
-  margin: 37px 0!important;
+  margin: 0!important;
+  height: calc(25vh - 38px)!important;
+  padding-top: 50px!important;
 }
 
 .virtual-table .ant-table.ant-table-small .ant-table-thead > tr > th {
@@ -36,3 +42,4 @@
 .virtual-table-cell {
   border-bottom: 1px solid #e8e8e8;
 }
+
