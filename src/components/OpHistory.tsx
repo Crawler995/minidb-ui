@@ -2,6 +2,7 @@ import { Badge, Button, Table } from 'antd';
 import React, { useEffect, useRef } from 'react'
 
 interface IHistory {
+  key: number;
   isSuccess: boolean;
   message: string;
   totalTime: string;
@@ -11,6 +12,7 @@ interface IHistory {
 interface IProps {
   histories: IHistory[];
   onClearHistory: () => void;
+  onRecoverHistory: (historyIndex: number) => void;
 }
 
 const columns = [
@@ -65,6 +67,9 @@ export default function OpHistory(props: IProps) {
           columns={columns}
           dataSource={props.histories}
           scroll={{ y: 'calc(25vh - 28px)' }}
+          onRow={(record, index) => ({
+            onClick: event => props.onRecoverHistory(index!)
+          })}
         />
       </div>
     </Badge.Ribbon>
