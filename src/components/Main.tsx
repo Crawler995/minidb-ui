@@ -71,7 +71,8 @@ export default function Main() {
         status,
         message,
         totalTime: totalTime + "ms",
-        time
+        time,
+        code
       }]);
     })
     .catch(err => console.log(err));
