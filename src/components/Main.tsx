@@ -74,6 +74,7 @@ export default function Main() {
         time,
         code
       }]);
+      setDefaultCode(code);
     })
     .catch(err => console.log(err));
   }
