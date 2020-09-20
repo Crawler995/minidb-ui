@@ -26,8 +26,9 @@ export default function Main() {
   useEffect(() => {
     getCurDatabase()
     .then(res => {
-      if(res.status) {
-        setCurDatabase(res.res);
+      const { data } = res;
+      if(data.status) {
+        setCurDatabase(data.res);
       } else {
         setCurDatabase('(No database found!)');
       }
@@ -56,7 +57,7 @@ export default function Main() {
         totalTime,
         time,
         curDatabase
-      } = res;
+      } = res.data;
 
       setCurDatabase(curDatabase);
       setResultData(data);
@@ -67,7 +68,7 @@ export default function Main() {
       setHistories([...histories, {
         status,
         message,
-        totalTime,
+        totalTime: totalTime + "ms",
         time
       }]);
     })
