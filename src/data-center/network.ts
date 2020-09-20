@@ -54,27 +54,29 @@ interface IRunSQLRes {
 }
 
 export const runSQL = (sql: string) => {
-  return axiosIns.post<any, AxiosResponse<IRunSQLRes>>('/api/runsql', sql);
-  // return new Promise<IRunSQLRes>((resolve, reject) => {
-  //   setTimeout(() => {
-  //     resolve({
-  //       status: true,
-  //       message: '100000 rows returned.',
-  //       totalTime: '0.53s',
-  //       time: '16:34',
-  //       curDatabase: 'student',
-  //       columns: ['id', 'name', 'age', 'home', 'phone'],
-  //       data: Array.from({length: 1000000}, (_, item) => ({
-  //         key: item,
-  //         id: item,
-  //         name: '' + item + item + item,
-  //         age: item * 2,
-  //         home: '' + item + item + item,
-  //         phone: '' + item + item + item
-  //       }))
-  //     })
-  //   }, 500);
-  // });
+  // return axiosIns.post<any, AxiosResponse<IRunSQLRes>>('/api/runsql', sql);
+  return new Promise<{ data: IRunSQLRes }>((resolve, reject) => {
+    setTimeout(() => {
+      resolve({
+        data: {
+          status: true,
+          message: '100000 rows returned.',
+          totalTime: '0.53s',
+          time: '16:34',
+          curDatabase: 'student',
+          columns: ['id', 'name', 'age', 'home', 'phone'],
+          data: Array.from({length: 1000000}, (_, item) => ({
+            key: item,
+            id: item,
+            name: '' + item + item + item,
+            age: item * 2,
+            home: '' + item + item + item,
+            phone: '' + item + item + item
+          }))
+        }
+      })
+    }, 0);
+  });
 };
 
 interface ICurDatabaseRes {
