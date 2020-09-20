@@ -70,15 +70,8 @@ export default function Main() {
         key: histories.length,
         status,
         message,
-<<<<<<< HEAD
         totalTime: totalTime + "ms",
         time
-=======
-        totalTime,
-        time,
-
-        code
->>>>>>> d5effc7e3a403fc90f8734cf9c4e06aa62a66e23
       }]);
     })
     .catch(err => console.log(err));
