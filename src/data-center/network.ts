@@ -54,34 +54,36 @@ interface IRunSQLRes {
 }
 
 export const runSQL = (sql: string) => {
-  // return axiosIns.post<any, AxiosResponse<IRunSQLRes>>('/api/runsql', sql);
-  return new Promise<{ data: IRunSQLRes }>((resolve, reject) => {
-    setTimeout(() => {
-      resolve({
-        data: {
-          status: true,
-          message: '1000000 rows returned.',
-          totalTime: '0.53s',
-          time: '16:34',
-          curDatabase: 'student',
-          columns: ['id', 'name', 'age', 'home', 'phone', 'phone1', 'phone2', 'phone3', 'phone4', 'phone5'],
-          data: Array.from({length: 1000000}, (_, item) => ({
-            key: item,
-            id: item,
-            name: '' + item + item + item,
-            age: item * 2,
-            home: '' + item + item + item,
-            phone: '' + item + item + item,
-            phone1: '' + item + item + item,
-            phone2: '' + item + item + item,
-            phone3: '' + item + item + item,
-            phone4: '' + item + item + item,
-            phone5: '' + item + item + item,
-          }))
-        }
-      })
-    }, 0);
+  return axiosIns.post<any, AxiosResponse<IRunSQLRes>>('/api/runsql', {
+    command: sql
   });
+  // return new Promise<{ data: IRunSQLRes }>((resolve, reject) => {
+  //   setTimeout(() => {
+  //     resolve({
+  //       data: {
+  //         status: true,
+  //         message: '3000000 rows returned.',
+  //         totalTime: '0.53s',
+  //         time: '16:34',
+  //         curDatabase: 'student',
+  //         columns: ['id', 'name', 'age', 'home', 'phone', 'phone1', 'phone2', 'phone3', 'phone4', 'phone5'],
+  //         data: Array.from({length: 300000}, (_, item) => ({
+  //           key: item,
+  //           id: item,
+  //           name: '' + item + item + item,
+  //           age: item * 2,
+  //           home: '' + item + item + item,
+  //           phone: '' + item + item + item,
+  //           phone1: '' + item + item + item,
+  //           phone2: '' + item + item + item,
+  //           phone3: '' + item + item + item,
+  //           phone4: '' + item + item + item,
+  //           phone5: '' + item + item + item,
+  //         }))
+  //       }
+  //     })
+  //   }, 0);
+  // });
 };
 
 interface ICurDatabaseRes {
@@ -96,15 +98,15 @@ interface ICurDatabaseRes {
 }
 
 export const getCurDatabase = () => {
-  // return axiosIns.get<any, AxiosResponse<ICurDatabaseRes>>('/api/curdb');
-  return new Promise<any>((resolve, reject) => {
-    setTimeout(() => {
-      resolve({
-        data: {
-          status: true,
-          res: '(Please use a database!)'
-        }
-      })
-    }, 100);
-  });
+  return axiosIns.get<any, AxiosResponse<ICurDatabaseRes>>('/api/curdb');
+  // return new Promise<any>((resolve, reject) => {
+  //   setTimeout(() => {
+  //     resolve({
+  //       data: {
+  //         status: true,
+  //         res: '(Please use a database!)'
+  //       }
+  //     })
+  //   }, 100);
+  // });
 }
