@@ -85,6 +85,7 @@ export default function VirtualTable(props: IProps) {
               'virtual-table-cell-last': columnIndex === mergedColumns.length - 1,
             })}
             style={style}
+            title={rawData[rowIndex][mergedColumns[columnIndex].dataIndex]}
           >
             {rawData[rowIndex][mergedColumns[columnIndex].dataIndex]}
           </div>

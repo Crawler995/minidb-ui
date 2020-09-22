@@ -45,7 +45,7 @@ export default function Main() {
 
   const runCode = (code: string) => {
     setLoading(true);
-
+    console.log(code);
     runSQL(code)
     .then(res => {
       setLoading(false);
@@ -79,7 +79,45 @@ export default function Main() {
     .catch(err => console.log(err));
   }
 
+  const runSelectedCode = (selectedCode: string, code: string) => {
+    setLoading(true);
+    console.log(selectedCode)
+    runSQL(selectedCode)
+    .then(res => {
+      setLoading(false);
+
+      const {
+        data,
+        columns,
+        status,
+        message,
+        totalTime,
+        time,
+        curDatabase
+      } = res.data;
+
+      setCurDatabase(curDatabase);
+      setResultData(data);
+      setResultColumns((columns.length === 0 ? ['No result.'] : columns).map(column => ({
+        title: column,
+        dataIndex: column
+      })));
+      setHistories([...histories, {
+        key: histories.length,
+        status,
+        message,
+        totalTime: totalTime + "ms",
+        time,
+        code
+      }]);
+      setDefaultCode(code);
+    })
+    .catch(err => console.log(err));
+  }
+
   const recoverHistory = (historyIndex: number) => {
+    window.getSelection()?.removeAllRanges();
+
     const history = histories.find(history => history.key === historyIndex);
     setDefaultCode(history.code);
 
@@ -101,7 +139,7 @@ export default function Main() {
                 defaultCode={defaultCode}
                 isCodeRunning={loading}
                 onRunCode={(code) => runCode(code)}
-                onRunSelectedCode={(code) => runCode(code)}
+                onRunSelectedCode={(selectedCode, code) => runSelectedCode(selectedCode, code)}
               />
             </Col>
 
@@ -120,7 +158,7 @@ export default function Main() {
                 columns={resultColumns}
                 dataSource={resultData}
                 loading={loading}
-                scroll={{ y: pageHeight * 0.75 - 190, x: 'calc(100vw - 60px)' }}
+                scroll={{ y: pageHeight * 0.7 - 190, x: 'calc(100vw - 60px)' }}
               />
             </Col>
           </Row>

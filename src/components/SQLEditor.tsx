@@ -11,7 +11,7 @@ interface IProps {
   defaultCode: string;
   isCodeRunning: boolean;
   onRunCode: (code: string) => void;
-  onRunSelectedCode: (code: string) => void;
+  onRunSelectedCode: (selectedCode: string, code: string) => void;
 }
 
 
@@ -39,6 +39,10 @@ export default function SQLEditor(props: IProps) {
     let res = [];
 
     for(let i = start.row; i <= end.row; i++) {
+      if(i >= codeRows.length) {
+        break;
+      }
+      
       if(i === start.row) {
         if(i === end.row) {
           res.push(codeRows[i].substring(start.column, end.column));
@@ -72,7 +76,7 @@ export default function SQLEditor(props: IProps) {
           type="default" 
           size="small" 
           style={{ margin: '0 4px' }}
-          onClick={() => props.onRunSelectedCode(selectedCode)}
+          onClick={() => props.onRunSelectedCode(selectedCode, code)}
         >Run selected SQL</Button>
 
         <Button 
