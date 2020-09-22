@@ -41,5 +41,8 @@
 
 .virtual-table-cell {
   border-bottom: 1px solid #e8e8e8;
+  border-right: 1px solid #e8e8e8;
+  padding: 0 4px;
+  overflow: hidden;
 }
 
