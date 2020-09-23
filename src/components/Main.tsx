@@ -52,38 +52,40 @@ export default function Main() {
     .then(res => {
       setLoading(false);
 
-      const {
-        data,
-        columns,
-        status,
-        message,
-        totalTime,
-        time,
-        curDatabase,
-        error
-      } = res.data;
+      res.data.forEach((item) => {
+        const {
+          data,
+          columns,
+          status,
+          message,
+          totalTime,
+          time,
+          curDatabase
+        } = item;
+  
+        setCurDatabase(curDatabase);
+        setResultData(data);
+        setResultColumns((columns.length === 0 ? ['No result.'] : columns).map(column => ({
+          title: column,
+          dataIndex: column
+        })));
+        setHistories(histories => [...histories, {
+          key: histories.length,
+          status,
+          message,
+          totalTime: totalTime + "ms",
+          time,
+          code
+        }]);
+        setDefaultCode(code);
+      });
 
-      setCurDatabase(curDatabase);
-      setResultData(data);
-      setResultColumns((columns.length === 0 ? ['No result.'] : columns).map(column => ({
-        title: column,
-        dataIndex: column
-      })));
-      setHistories([...histories, {
-        key: histories.length,
-        status,
-        message,
-        totalTime: totalTime + "ms",
-        time,
-        code
-      }]);
-      setDefaultCode(code);
-
-      if(error) {
-        setAnnotations([{
+      const errors = res.data.map(item => item.error).filter(item => item !== null) as Required<Ace.Annotation>[];
+      if(errors.length) {
+        setAnnotations(errors.map(error => ({
           ...error,
           row: error.row - 1,
-        }]);
+        })));
       } else {
         setAnnotations([]);
       }
@@ -98,38 +100,40 @@ export default function Main() {
     .then(res => {
       setLoading(false);
 
-      const {
-        data,
-        columns,
-        status,
-        message,
-        totalTime,
-        time,
-        curDatabase,
-        error
-      } = res.data;
+      res.data.forEach((item) => {
+        const {
+          data,
+          columns,
+          status,
+          message,
+          totalTime,
+          time,
+          curDatabase
+        } = item;
+  
+        setCurDatabase(curDatabase);
+        setResultData(data);
+        setResultColumns((columns.length === 0 ? ['No result.'] : columns).map(column => ({
+          title: column,
+          dataIndex: column
+        })));
+        setHistories(histories => [...histories, {
+          key: histories.length,
+          status,
+          message,
+          totalTime: totalTime + "ms",
+          time,
+          code
+        }]);
+        setDefaultCode(code);
+      })
 
-      setCurDatabase(curDatabase);
-      setResultData(data);
-      setResultColumns((columns.length === 0 ? ['No result.'] : columns).map(column => ({
-        title: column,
-        dataIndex: column
-      })));
-      setHistories([...histories, {
-        key: histories.length,
-        status,
-        message,
-        totalTime: totalTime + "ms",
-        time,
-        code
-      }]);
-      setDefaultCode(code);
-
-      if(error) {
-        setAnnotations([{
+      const errors = res.data.map(item => item.error).filter(item => item !== null) as Required<Ace.Annotation>[];
+      if(errors.length) {
+        setAnnotations(errors.map(error => ({
           ...error,
           row: error.row - 1 + startRow,
-        }]);
+        })));
       } else {
         setAnnotations([]);
       }

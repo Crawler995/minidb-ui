@@ -61,15 +61,15 @@ interface IRunSQLRes {
 
 export const runSQL = (sql: string) => {
   if(!isMock) {
-    return axiosIns.post<any, AxiosResponse<IRunSQLRes>>('/api/runsql', {
+    return axiosIns.post<any, AxiosResponse<IRunSQLRes[]>>('/api/runsql', {
       command: sql
     });
   }
   
-  return new Promise<{ data: IRunSQLRes }>((resolve, reject) => {
+  return new Promise<{ data: IRunSQLRes[] }>((resolve, reject) => {
     setTimeout(() => {
       resolve({
-        data: {
+        data: [{
           status: true,
           message: '3000000 rows returned.',
           totalTime: '0.53s',
@@ -95,7 +95,33 @@ export const runSQL = (sql: string) => {
             text: 'error in asdf',
             type: "error"
           }
-        }
+        }, {
+          status: false,
+          message: '200000 rows returned.',
+          totalTime: '0.5345s',
+          time: '16:34',
+          curDatabase: 'student',
+          columns: ['id', 'name', 'age', 'home', 'phone', 'phone1', 'phone2', 'phone3', 'phone4', 'phone5'],
+          data: Array.from({length: 300000}, (_, item) => ({
+            key: item,
+            id: item,
+            name: '' + item + item + item,
+            age: item * 2,
+            home: '' + item + item + item,
+            phone: '' + item + item + item,
+            phone1: '' + item + item + item,
+            phone2: '' + item + item + item,
+            phone3: '' + item + item + item,
+            phone4: '' + item + item + item,
+            phone5: '' + item + item + item,
+          })),
+          error: {
+            row: 2,
+            column: 3,
+            text: 'error in asdf',
+            type: "error"
+          }
+        }]
       })
     }, 0);
   });
