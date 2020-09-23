@@ -9,6 +9,7 @@ import ResultTable from './ResultTable';
 import StatusBar from './StatusBar';
 
 import { getCurDatabase, runSQL } from '../data-center/network';
+import { Ace } from 'ace-builds';
 
 interface ITableColumn {
   title: string;
@@ -23,6 +24,7 @@ export default function Main() {
   const [loading, setLoading] = useState(false);
   const [curDatabase, setCurDatabase] = useState('(loading...)');
   const [defaultCode, setDefaultCode] = useState('');
+  const [annotations, setAnnotations] = useState([] as Ace.Annotation[]);
 
   useEffect(() => {
     getCurDatabase()
@@ -57,7 +59,8 @@ export default function Main() {
         message,
         totalTime,
         time,
-        curDatabase
+        curDatabase,
+        error
       } = res.data;
 
       setCurDatabase(curDatabase);
@@ -75,11 +78,20 @@ export default function Main() {
         code
       }]);
       setDefaultCode(code);
+
+      if(error) {
+        setAnnotations([{
+          ...error,
+          row: error.row - 1,
+        }]);
+      } else {
+        setAnnotations([]);
+      }
     })
     .catch(err => console.log(err));
   }
 
-  const runSelectedCode = (selectedCode: string, code: string) => {
+  const runSelectedCode = (selectedCode: string, startRow: number, code: string) => {
     setLoading(true);
     console.log(selectedCode)
     runSQL(selectedCode)
@@ -93,7 +105,8 @@ export default function Main() {
         message,
         totalTime,
         time,
-        curDatabase
+        curDatabase,
+        error
       } = res.data;
 
       setCurDatabase(curDatabase);
@@ -111,6 +124,15 @@ export default function Main() {
         code
       }]);
       setDefaultCode(code);
+
+      if(error) {
+        setAnnotations([{
+          ...error,
+          row: error.row - 1 + startRow,
+        }]);
+      } else {
+        setAnnotations([]);
+      }
     })
     .catch(err => console.log(err));
   }
@@ -136,10 +158,11 @@ export default function Main() {
           <Row gutter={[60, 36]}>
             <Col span={12}>
               <SQLEditor
+                annotations={annotations}
                 defaultCode={defaultCode}
                 isCodeRunning={loading}
                 onRunCode={(code) => runCode(code)}
-                onRunSelectedCode={(selectedCode, code) => runSelectedCode(selectedCode, code)}
+                onRunSelectedCode={(selectedCode, startRow, code) => runSelectedCode(selectedCode, startRow, code)}
               />
             </Col>
 

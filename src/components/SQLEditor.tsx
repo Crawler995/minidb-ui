@@ -6,22 +6,25 @@ import "../utils/ace-minidb-sql";
 import "ace-builds/src-noconflict/theme-github";
 import "ace-builds/src-noconflict/ext-language_tools";
 import { Badge, Button } from 'antd';
+import { Ace } from 'ace-builds';
 
 interface IProps {
   defaultCode: string;
   isCodeRunning: boolean;
+  annotations: Ace.Annotation[];
   onRunCode: (code: string) => void;
-  onRunSelectedCode: (selectedCode: string, code: string) => void;
+  onRunSelectedCode: (selectedCode: string, startRow: number, code: string) => void;
 }
 
 
 export default function SQLEditor(props: IProps) {
   const [code, setCode] = useState(props.defaultCode);
   const [selectedCode, setSelectedCode] = useState('');
+  const [startRow, setStartRow] = useState(0);
 
   useEffect(() => {
     setCode(props.defaultCode);
-  }, [props.defaultCode]);
+  }, [props.defaultCode, props.annotations]);
 
   const getSelectedCode = (value: any) => {
     if(code === '') {
@@ -30,6 +33,7 @@ export default function SQLEditor(props: IProps) {
     
     value = JSON.parse(JSON.stringify(value));
     const { start, end } = value;
+    setStartRow(start.row);
 
     if(start.row === end.row && start.column === end.column) {
       return '';
@@ -76,7 +80,7 @@ export default function SQLEditor(props: IProps) {
           type="default" 
           size="small" 
           style={{ margin: '0 4px' }}
-          onClick={() => props.onRunSelectedCode(selectedCode, code)}
+          onClick={() => props.onRunSelectedCode(selectedCode, startRow, code)}
         >Run selected SQL</Button>
 
         <Button 
@@ -100,6 +104,8 @@ export default function SQLEditor(props: IProps) {
         value={code}
         onChange={(value) => setCode(value)}
         onSelectionChange={(value) => setSelectedCode(getSelectedCode(value))}
+
+        annotations={props.annotations}
 
         showPrintMargin={false}
         editorProps={{

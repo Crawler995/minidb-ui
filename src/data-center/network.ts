@@ -1,3 +1,4 @@
+import { Ace } from 'ace-builds';
 import axios, { AxiosResponse } from 'axios';
 
 const axiosIns = axios.create();
@@ -52,6 +53,10 @@ interface IRunSQLRes {
    * ]
    */
   data: any[];
+  /**
+   * 本次SQL语句的语法错误出现位置。如果没有语法错误，则为null。
+   */
+  error: Required<Ace.Annotation> | null;
 }
 
 export const runSQL = (sql: string) => {
@@ -83,7 +88,13 @@ export const runSQL = (sql: string) => {
             phone3: '' + item + item + item,
             phone4: '' + item + item + item,
             phone5: '' + item + item + item,
-          }))
+          })),
+          error: {
+            row: 1,
+            column: 2,
+            text: 'error in asdf',
+            type: "error"
+          }
         }
       })
     }, 0);
